@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.902
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaAPICore", "MinhaAPICore\MinhaAPICore.csproj", "{78CBA536-6045-4220-A74B-B9A99FE010F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{BADDE6E7-8CA1-495C-A677-FA55D48D67C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra", "Infra\Infra.csproj", "{9E0E4EAB-B040-4AC8-BCE2-A4CCFAFECB2E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78CBA536-6045-4220-A74B-B9A99FE010F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78CBA536-6045-4220-A74B-B9A99FE010F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78CBA536-6045-4220-A74B-B9A99FE010F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78CBA536-6045-4220-A74B-B9A99FE010F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BADDE6E7-8CA1-495C-A677-FA55D48D67C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BADDE6E7-8CA1-495C-A677-FA55D48D67C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BADDE6E7-8CA1-495C-A677-FA55D48D67C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BADDE6E7-8CA1-495C-A677-FA55D48D67C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E0E4EAB-B040-4AC8-BCE2-A4CCFAFECB2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E0E4EAB-B040-4AC8-BCE2-A4CCFAFECB2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E0E4EAB-B040-4AC8-BCE2-A4CCFAFECB2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E0E4EAB-B040-4AC8-BCE2-A4CCFAFECB2E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {16E9F3FE-E6B7-4EDC-ACA2-C9A48C6E3448}
+	EndGlobalSection
+EndGlobal
