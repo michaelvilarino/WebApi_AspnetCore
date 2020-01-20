@@ -15,7 +15,6 @@ namespace Infra.Mapeamentos
             builder.Property(p => p.Valor).HasColumnName("Valor").HasColumnType("decimal");
             builder.Property(p => p.Imagem).HasColumnName("Imagem").HasColumnType("varchar(100)");
             builder.Property(p => p.DataCadastro).HasColumnName("DataCadastro").HasColumnType("DateTime");
-
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Infra.Contexto
     {
         private string _connectionString = "";
 
-        public AplicacaoContexto(DbContextOptions options, IConfiguration configuration) : base(options){
+        public AplicacaoContexto(DbContextOptions<AplicacaoContexto> options, IConfiguration configuration) : base(options){
 
             _connectionString = configuration.GetConnectionString("ConexaoBanco");            
         }

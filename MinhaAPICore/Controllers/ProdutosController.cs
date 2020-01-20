@@ -7,6 +7,7 @@ using AutoMapper;
 using Business.Servicos.Interfaces;
 using Infra;
 using Infra.Repositorios.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MinhaAPICore.ViewModels;
 
@@ -18,16 +19,19 @@ namespace MinhaAPICore.Controllers
         private readonly IProdutoRepositorio _produtoRepositorio;
         private readonly IProdutoAppServico _produtoAppServico;
         private readonly IMapper _mapper;
+        private readonly IFornecedorRepositorio _fornecedorRepositorio;
 
         public ProdutosController(INotificador notificador,
                                     IProdutoRepositorio IProdutoRepositorio,
                                     IProdutoAppServico IProdutoAppServico,
-                                    IMapper IMapper
+                                    IMapper IMapper,
+                                    IFornecedorRepositorio IFornecedorRepositorio
                                  ) : base(notificador)
         {
             _produtoRepositorio = IProdutoRepositorio;
             _produtoAppServico = IProdutoAppServico;
             _mapper = IMapper;
+            _fornecedorRepositorio = IFornecedorRepositorio;
         }
 
         [HttpGet]
@@ -70,6 +74,62 @@ namespace MinhaAPICore.Controllers
             await _produtoAppServico.Adicionar(_mapper.Map<Produto>(produtoViewModel));
 
             return CustomResponse(produtoViewModel);
+        }
+
+        [HttpPost("AdicionarFormData")]
+        public async Task<ActionResult<ProdutoViewModel>> AdicionarFormData([FromForm] ProdutoFormDataViewModel produtoViewModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+                var imagemNome = Guid.NewGuid() + "_";
+
+                if (!await UploadImagemFormFile(produtoViewModel.ImagemUpload))
+                {
+                    return CustomResponse(produtoViewModel);
+                }
+
+                produtoViewModel.Imagem = imagemNome + produtoViewModel.ImagemUpload.FileName;
+
+                var novoProduto = _mapper.Map<Produto>(produtoViewModel);                
+
+                novoProduto.Fornecedor = new Fornecedor() { Id = produtoViewModel.FornecedorId };
+
+                await _produtoAppServico.Adicionar(novoProduto);
+
+                return CustomResponse(produtoViewModel);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        private async Task<bool> UploadImagemFormFile(IFormFile formFile)
+        {
+            if (formFile == null || formFile.Length == 0)
+            {
+                NotificarErro("Imagem não informada!");
+                return false;
+
+            }
+
+            var caminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Imagens", formFile.FileName);
+
+            if (System.IO.Directory.Exists(caminhoArquivo))
+            {
+                NotificarErro("A imagem já existe!");
+                return false;
+            }
+
+            using (var stream = new FileStream(caminhoArquivo, FileMode.Create))
+            {
+                await formFile.CopyToAsync(stream);
+            }
+
+            return true;
         }
 
 

@@ -14,7 +14,7 @@ namespace Infra
         public DateTime DataCadastro { get; private set; }
 
         public Guid FornecedorId { get; private set; }
-        public virtual Fornecedor Fornecedor { get; private set; }
+        public virtual Fornecedor Fornecedor { get; set; }
 
         public Produto()
         {

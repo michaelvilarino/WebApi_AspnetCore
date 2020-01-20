@@ -5,11 +5,14 @@ using AutoMapper;
 using Business.Servicos.Interfaces;
 using Infra;
 using Infra.Repositorios.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MinhaAPICore.Extensoes;
 using MinhaAPICore.ViewModels;
 
 namespace MinhaAPICore.Controllers
 {
+    [Authorize]
     [Route("api/[Controller]")]
     public class FornecedoresController : MainController
     {
@@ -29,6 +32,7 @@ namespace MinhaAPICore.Controllers
             _fornecedorAppServico = IFornecedorAppServico;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IEnumerable<FornecedorViewModel>> ObterTodos()
         {
@@ -54,6 +58,7 @@ namespace MinhaAPICore.Controllers
             return fornecedor;
         }
 
+        [ClaimsAuthorize("Fornecedor", "Adicionar")]
         [HttpPost]
         public async Task<ActionResult<FornecedorViewModel>> Adicionar(FornecedorViewModel fornecedorViewModel)
         {
@@ -68,6 +73,7 @@ namespace MinhaAPICore.Controllers
             return CustomResponse(fornecedorViewModel);
         }
 
+        [ClaimsAuthorize("Fornecedor", "Atualizar")]
         [HttpPost("{Id:guid}")]
         public async Task<ActionResult<FornecedorViewModel>> Atualizar(Guid Id, FornecedorViewModel fornecedorViewModel)
         {
@@ -84,6 +90,7 @@ namespace MinhaAPICore.Controllers
             return CustomResponse(fornecedorViewModel);
         }
 
+        [ClaimsAuthorize("Fornecedor", "Remover")]
         [HttpDelete("{Id:guid}")]
         public async Task<ActionResult<FornecedorViewModel>> Excluir(Guid Id)
         {

@@ -10,7 +10,8 @@ namespace MinhaAPICore.Configurations
         {
             CreateMap<Fornecedor, FornecedorViewModel>().ReverseMap();
             CreateMap<Produto, ProdutoViewModel>().ReverseMap();
-            CreateMap<Endereco, EnderecoViewModel>().ReverseMap();
+            CreateMap<Produto, ProdutoFormDataViewModel>().ReverseMap();
+            CreateMap<Endereco, EnderecoViewModel>().ReverseMap();            
         }
     }
 }
