@@ -5,7 +5,12 @@ using Infra;
 using Infra.Contexto;
 using Infra.Repositorios;
 using Infra.Repositorios.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using MinhaAPICore.Configurations;
+using MinhaAPICore.Extensoes;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace MinhaAPICore
 {
@@ -31,6 +36,13 @@ namespace MinhaAPICore
             //Data
             servicos.AddDbContext<AplicacaoContexto>();
             servicos.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            servicos.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            servicos.AddScoped<IUser, AspNetUser>();
+
+            servicos.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+
+
 
         }
 

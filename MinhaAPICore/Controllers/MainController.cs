@@ -17,10 +17,21 @@ namespace MinhaAPICore.Controllers
         // validação de operação de negócios
 
         private readonly INotificador _notificador;
+        public readonly IUser AppUser;
 
-        public MainController(INotificador notificador)
+        protected Guid UsuarioId { get; set; }
+        protected bool UsuarioAutenticado { get; set; }
+
+        public MainController(INotificador notificador, IUser appuser)
         {
             _notificador = notificador;
+            AppUser = appuser;
+
+            if (appuser.IsAuthenticated())
+            {
+                UsuarioId = appuser.GetUserId();
+                UsuarioAutenticado = true;
+            }
         }
 
         protected bool OperacaoValida()
