@@ -74,7 +74,7 @@ namespace MinhaAPICore.Controllers
         }
 
         [ClaimsAuthorize("Fornecedor", "Atualizar")]
-        [HttpPost("{Id:guid}")]
+        [HttpPut("{Id:guid}")]
         public async Task<ActionResult<FornecedorViewModel>> Atualizar(Guid Id, FornecedorViewModel fornecedorViewModel)
         {
             if (Id != fornecedorViewModel.Id)
