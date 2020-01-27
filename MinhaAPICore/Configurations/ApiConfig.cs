@@ -48,15 +48,15 @@ namespace MinhaAPICore.Configurations
                                                                       .AllowAnyHeader()
                                                                       .AllowCredentials());
 
-                options.AddPolicy(name: "Production",
-                        configurePolicy: builder =>
-                        builder
-                               .WithMethods("GET")
-                               .WithOrigins("http://qualsitepodechamarAPI")
-                               .SetIsOriginAllowedToAllowWildcardSubdomains()//Permite todos os subdomínios chamarem a API
-                                                                             //.WithHeaders(HeaderNames.ContentType, "x-custom-header") o que permite enviar no header
-                               .AllowAnyHeader()
-                        );
+                //options.AddPolicy(name: "Production",
+                //        configurePolicy: builder =>
+                //        builder
+                //               .WithMethods("GET")
+                //               .WithOrigins("http://qualsitepodechamarAPI")
+                //               .SetIsOriginAllowedToAllowWildcardSubdomains()//Permite todos os subdomínios chamarem a API
+                //                                                             //.WithHeaders(HeaderNames.ContentType, "x-custom-header") o que permite enviar no header
+                //               .AllowAnyHeader()
+                //        );
             });
 
             return servicos;

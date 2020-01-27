@@ -1,18 +1,64 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MinhaAPICore.Configurations
 {
-    public class ConfigureSwaggerOptions: IConfigureOptions<SwaggerGenOptions>
+    public static class SwaggerConfig
     {
-        private readonly IApiVersionDescriptionProvider provider;
+        public static IServiceCollection AddSwaggerConfig(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.OperationFilter<SwaggerDefaultValues>();
 
-        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider _provider) => this.provider = _provider;
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer", new string[] { }}
+                };
+
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "Insira o token JWT desta maneira: Bearer {seu token}",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+
+                c.AddSecurityRequirement(security);
+            });
+
+            return services;
+        }
+
+        public static IApplicationBuilder UseSwaggerConfig(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
+        {
+            //app.UseMiddleware<SwaggerAuthorizedMiddleware>();
+            app.UseSwagger();
+            app.UseSwaggerUI(
+                options =>
+                {
+                    foreach (var description in provider.ApiVersionDescriptions)
+                    {
+                        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                    }
+                });
+            return app;
+        }
+    }
+
+    public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
+    {
+        readonly IApiVersionDescriptionProvider provider;
+
+        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) => this.provider = provider;
 
         public void Configure(SwaggerGenOptions options)
         {
@@ -26,50 +72,20 @@ namespace MinhaAPICore.Configurations
         {
             var info = new Info()
             {
-                Title = "API - Michael",
+                Title = "API - desenvolvedor.io",
                 Version = description.ApiVersion.ToString(),
-                Description = "Testando a API",
-                Contact = new Contact() { Name = "Michael", Email = "michael.vilarino@gmail.com" },
+                Description = "Esta API faz parte do curso REST com ASP.NET Core WebAPI.",
+                Contact = new Contact() { Name = "Eduardo Pires", Email = "contato@desenvolvedor.io" },
                 TermsOfService = "https://opensource.org/licenses/MIT",
                 License = new License() { Name = "MIT", Url = "https://opensource.org/licenses/MIT" }
             };
 
-            if(description.IsDeprecated)
+            if (description.IsDeprecated)
             {
-                info.Description += "Esta versão está obsoleta!";    
+                info.Description += " Esta versão está obsoleta!";
             }
 
             return info;
-        }
-        
-    }
-
-    public static class SwaggerConfig
-    {
-        public static IServiceCollection AddSwaggerConfig(this IServiceCollection servicos)
-        {
-            servicos.AddSwaggerGen(c =>
-            {
-                c.OperationFilter<SwaggerDefaultValues>();
-            });
-
-            return servicos;
-        }
-
-        public static IApplicationBuilder UseSwaggerConfig(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
-        {
-            app.UseSwagger();
-
-            app.UseSwaggerUI(
-                  options =>
-                  {
-                      foreach (var description in provider.ApiVersionDescriptions)
-                      {
-                          options.SwaggerEndpoint(url: $"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                      }
-                  });
-
-            return app;
         }
     }
 
@@ -90,7 +106,7 @@ namespace MinhaAPICore.Configurations
             {
                 var description = apiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);
 
-                if (parameter.Description != null)
+                if (parameter.Description == null)
                 {
                     parameter.Description = description.ModelMetadata?.Description;
                 }
@@ -102,6 +118,28 @@ namespace MinhaAPICore.Configurations
 
                 parameter.Required |= description.IsRequired;
             }
+        }
+    }
+
+    public class SwaggerAuthorizedMiddleware
+    {
+        private readonly RequestDelegate _next;
+
+        public SwaggerAuthorizedMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+
+        public async Task Invoke(HttpContext context)
+        {
+            if (context.Request.Path.StartsWithSegments("/swagger")
+                && !context.User.Identity.IsAuthenticated)
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return;
+            }
+
+            await _next.Invoke(context);
         }
     }
 }

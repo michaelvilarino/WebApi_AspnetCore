@@ -5,21 +5,30 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MinhaAPICore.Configurations;
+using MinhaAPICore.Extensoes;
 
 namespace MinhaAPICore
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
+
+        public Startup(IHostingEnvironment hostingEnvironment)
+        {
+            var builder = new ConfigurationBuilder()
+                 .SetBasePath(hostingEnvironment.ContentRootPath)
+                 .AddJsonFile("appsettings.json", true, true)
+                 .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", true, true)
+                 .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLoggingConfiguration();
+
             IoCConfig.RegistrarServicos(services);
 
             services.AddIdentityConfiguration(Configuration);
@@ -28,7 +37,7 @@ namespace MinhaAPICore
 
             services.WebApiConfig();
 
-            services.AddSwaggerConfig();
+            services.AddSwaggerConfig();           
             
         }
 
@@ -48,9 +57,14 @@ namespace MinhaAPICore
             }
 
             app.UseAuthentication();
+
+            app.UseMiddleware<ExceptionMiddleware>();
+
             app.UseMvcConfiguration();
 
             app.UseSwaggerConfig(provider);
+
+            app.UseLoggingConfiguration();
                         
         }
     }

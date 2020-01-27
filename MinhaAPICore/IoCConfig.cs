@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MinhaAPICore.Configurations;
+using MinhaAPICore.Data;
 using MinhaAPICore.Extensoes;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -20,7 +21,7 @@ namespace MinhaAPICore
 
         public static void RegistrarServicos(IServiceCollection servicos)
         {
-            _services = servicos;
+            servicos.AddScoped<AppDbContext>();
 
             //Registrar repositórios
             servicos.AddScoped<IEnderecoRepositorio, EnderecoRepositorio>();
@@ -42,7 +43,7 @@ namespace MinhaAPICore
 
             servicos.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
-
+            _services = servicos;
 
         }
 
