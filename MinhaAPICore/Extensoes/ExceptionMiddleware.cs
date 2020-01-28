@@ -29,11 +29,10 @@ namespace MinhaAPICore.Extensoes
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            exception.Ship(context);
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            return Task.CompletedTask;
+            await exception.ShipAsync(context);
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;           
         }
 
         //private static Task HandleExceptionAsync(HttpContext context, Exception exception)

@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MinhaAPICore.Configurations;
 using MinhaAPICore.Extensoes;
+
 
 namespace MinhaAPICore
 {
@@ -25,9 +28,11 @@ namespace MinhaAPICore
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddLoggingConfiguration();
+            services.AddLoggingConfiguration(configuration);          
+
+            services.AddHealthChecksUI();// Instalar o pacote: aspnetcore.HealthChecks.ui para gerenciar via interface
 
             IoCConfig.RegistrarServicos(services);
 
@@ -65,9 +70,12 @@ namespace MinhaAPICore
             app.UseSwaggerConfig(provider);
 
             app.UseLoggingConfiguration();
-                        
+
         }
     }
 }
 
 //PARA VERSIONAMENTO DA API, INSTALAR: microsoft.aspnetcore.mvc.versioning E microsoft.aspnetcore.mvc.Versioning.ApiExplorer
+
+    //PARA RODAR PO MIGRATION EM PRODUÇÃO, RODAR O SEGUINTE COMANDO NO PACKAGE MANAGER PRIMEIRO:
+    //$env:ASPNETCORE_ENVIRONMENT='Production'

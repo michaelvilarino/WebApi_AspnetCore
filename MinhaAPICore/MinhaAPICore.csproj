@@ -14,9 +14,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="2.2.28" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.0" />
-    <PackageReference Include="Elmah.Io.AspNetCore" Version="3.8.99" />
-    <PackageReference Include="Elmah.Io.Extensions.Logging" Version="3.6.60" />
+    <PackageReference Include="Elmah.Io.AspNetCore" Version="3.6.63" />
+    <PackageReference Include="Elmah.Io.AspNetCore.HealthChecks" Version="3.8.99" />
+    <PackageReference Include="Elmah.Io.Extensions.Logging" Version="3.4.38" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.0" />
