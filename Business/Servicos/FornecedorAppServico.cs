@@ -41,6 +41,8 @@ namespace Business.Servicos
 
                 await FornecedorRepositorio.Atualizar(fornecedorBanco);
 
+                await Uow.Save();
+
                 return true;
             }
             catch (Exception ex)
@@ -102,6 +104,8 @@ namespace Business.Servicos
             }
 
             await FornecedorRepositorio.Remover(fornecedor);
+
+            await Uow.Save();
 
             return true;
         }
