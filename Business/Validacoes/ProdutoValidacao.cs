@@ -10,7 +10,7 @@ namespace Business.Validacoes
     {
         public ProdutoValidacao()
         {
-            RuleFor(f => f.Fornecedor).NotNull().WithMessage("Fornecedor não foi informado!");
+            RuleFor(f => f.FornecedorId).NotNull().WithMessage("Fornecedor não foi informado!");
             RuleFor(f => f.Descricao).NotEmpty().WithMessage("Informe a descrição do produto");
         }
     }

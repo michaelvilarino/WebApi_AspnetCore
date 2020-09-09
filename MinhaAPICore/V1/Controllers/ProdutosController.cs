@@ -59,7 +59,7 @@ namespace MinhaAPICore.V1.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var imagemNome = Guid.NewGuid() + "_" + produtoViewModel.Imagem;
+            var imagemNome = Guid.NewGuid() + "_" + produtoViewModel.nome;
 
             if (!UploadDeArquivo(produtoViewModel.ImagemUpload, imagemNome))
             {
@@ -113,7 +113,7 @@ namespace MinhaAPICore.V1.Controllers
 
             }
 
-            var caminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Imagens", formFile.FileName);
+            var caminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", formFile.FileName);
 
             if (System.IO.Directory.Exists(caminhoArquivo))
             {
@@ -150,7 +150,7 @@ namespace MinhaAPICore.V1.Controllers
                 return false;
             }
 
-            var caminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Imagens", nomeImagem);
+            var caminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", nomeImagem);
 
             if (System.IO.Directory.Exists(caminhoArquivo))
             {

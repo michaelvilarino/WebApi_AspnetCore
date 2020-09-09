@@ -11,7 +11,7 @@ namespace Infra
 
         public string ImagemUpload { get; private set; }
         public string Imagem { get; private set; }
-        public DateTime DataCadastro { get; private set; }
+        public DateTime DataCadastro { get;  set; }
 
         public Guid FornecedorId { get; private set; }
         public virtual Fornecedor Fornecedor { get; set; }

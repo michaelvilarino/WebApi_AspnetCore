@@ -28,6 +28,7 @@ namespace MinhaAPICore.ViewModels
 
         [Required(ErrorMessage = "Informe o fornecedor")]
         public Guid FornecedorId { get; set; }
+        public string nome { get;  set; }
 
         //ScaffoldColumn não leva este atributo para a página razor
     }

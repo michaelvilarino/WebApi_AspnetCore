@@ -48,7 +48,11 @@ namespace Business.Servicos
         {
             if (!ExecutarValidacao(new ProdutoValidacao(), produto)) return false;
 
+            produto.DataCadastro = DateTime.Now;
+
             await _produtoRepositorio.Adicionar(produto);
+
+            await Uow.Save();
 
             return true;
         }
